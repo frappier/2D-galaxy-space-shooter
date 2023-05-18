@@ -24,6 +24,14 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalculateMovement();
+    }
+
+
+
+    //Create a method to hold all that is movement related
+    void CalculateMovement()
+    {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -62,14 +70,13 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 1.5f), 0);
 
         //Making your player wrap on the X axis
-        if(transform.position.x >= 11.3f)
+        if (transform.position.x >= 11.3f)
         {
             transform.position = new Vector3(-11.3f, transform.position.y, 0);
         }
-        else if(transform.position.x <= -11.3f)
+        else if (transform.position.x <= -11.3f)
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
-
     }
 }
