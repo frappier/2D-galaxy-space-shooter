@@ -15,11 +15,21 @@ public class Player : MonoBehaviour
     private float _nextFire = 0.0f;
     [SerializeField]
     private int _lives = 3;
+    [SerializeField]
+    private SpawnManager _spawnManager;
+
+    
    
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+
+        if(_spawnManager == null)
+        {
+            Debug.LogError("The SpawnManager is NULL.");
+        }
         
     }
 
@@ -61,7 +71,7 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
        
-       Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+       Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
 
        _nextFire = Time.time + _fireRate;
         
@@ -73,7 +83,9 @@ public class Player : MonoBehaviour
 
         if(_lives < 1)
         {
+            _spawnManager.IsPlayerDead();
             Destroy(this.gameObject);
+            
         }
     }
 }
