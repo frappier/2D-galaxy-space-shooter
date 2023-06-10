@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _tripleShotPrefab;
+    [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
     private float _nextFire = 0.0f;
@@ -17,7 +19,8 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private SpawnManager _spawnManager;
-
+    [SerializeField]
+    private bool _isTripleshotActive = false;
     
    
     // Start is called before the first frame update
@@ -55,7 +58,18 @@ public class Player : MonoBehaviour
         transform.Translate(direction * _speed * Time.deltaTime);
 
         //Restricting on the Y axis using Math.Clamp
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 1.5f), 0);
+        //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 1.5f), 0);
+        if(transform.position.y > 1.5f)
+        {
+            transform.position = new Vector3(transform.position.x, 1.5f, 0);
+        }
+        else
+        {
+             if(transform.position.y < -4.8f)
+            {
+                transform.position = new Vector3(transform.position.x, -4.8f, 0);
+            }
+        }
 
         //Making your player wrap on the X axis
         if (transform.position.x >= 11.3f)
@@ -70,11 +84,23 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
+        _nextFire = Time.time + _fireRate;
        
-       Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
 
-       _nextFire = Time.time + _fireRate;
-        
+        if (_isTripleshotActive == true)
+        {
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
+        }
+             
+    }
+
+    public void TripleShot()
+    {
+        _isTripleshotActive = true;
     }
 
     public void Damage()
