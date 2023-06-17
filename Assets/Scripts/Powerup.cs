@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _powerupSpeed = 3.0f;
+    [SerializeField]
+    private int _powerupID;  // 0 = Triple Shot,  1 = Speed,  2 = Shields
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +35,19 @@ public class Powerup : MonoBehaviour
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
-                player.TripleShot();
+                switch (_powerupID)
+                {
+                    case 0:
+                        player.TripleShot();
+                        break;
+                    case 1:
+                        Debug.Log("Collected Speed Boost");
+                        break;
+                    case 2:
+                        Debug.Log("Collected Shield");
+                        break;
+                }
+                                                
             }
 
             Destroy(this.gameObject);
