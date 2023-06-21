@@ -8,9 +8,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
+    private int _speedBoostMultiplier = 2;
+    [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
+    [SerializeField]
+    private GameObject _shieldVisualizer;
     [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
@@ -19,13 +23,15 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private SpawnManager _spawnManager;
-    [SerializeField]
+
     private bool _isTripleshotActive = false;
+    private bool _isShieldActive = false;
     
    
     // Start is called before the first frame update
     void Start()
     {
+        _shieldVisualizer.SetActive(false);
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 
@@ -55,8 +61,9 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
                 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);   //putting the direction into a variable to use in the Translate
+       
         transform.Translate(direction * _speed * Time.deltaTime);
-
+       
         //Restricting on the Y axis using Math.Clamp
         //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.8f, 1.5f), 0);
         if(transform.position.y > 1.5f)
@@ -110,10 +117,37 @@ public class Player : MonoBehaviour
         _isTripleshotActive = false;
     }
 
+    public void SpeedBoost()
+    {
+        //_isSpeedBoostactive = true;
+        _speed *= _speedBoostMultiplier;
+        StartCoroutine(SpeedBoostPowerDown());
+    }
+
+    IEnumerator SpeedBoostPowerDown()
+    {
+        yield return new WaitForSeconds(5.0f);
+        //_isSpeedBoostactive = false;
+        _speed /= _speedBoostMultiplier;
+    }
+
+    public void ShieldPowerup()
+    {
+        _isShieldActive = true;
+        _shieldVisualizer.SetActive(true);
+    }
+
     public void Damage()
     {
+        if (_isShieldActive == true)
+        {
+            _isShieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            return;
+        }
+                
         _lives -= 1;
-
+                
         if(_lives < 1)
         {
             _spawnManager.IsPlayerDead();
