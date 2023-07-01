@@ -165,7 +165,6 @@ public class Player : MonoBehaviour
         {
             _spawnManager.IsPlayerDead();
             Destroy(this.gameObject);
-            
         }
     }
 
