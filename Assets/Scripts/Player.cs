@@ -23,6 +23,10 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private GameObject _rightEngine;
+    [SerializeField]
+    private GameObject _leftEngine;
 
     private bool _isTripleshotActive = false;
     private bool _isShieldActive = false;
@@ -50,6 +54,9 @@ public class Player : MonoBehaviour
         {
             Debug.Log("The UI Managaer is NULL");
         }
+
+        _rightEngine.SetActive(false);
+        _leftEngine.SetActive(false);
         
     }
 
@@ -158,6 +165,15 @@ public class Player : MonoBehaviour
         }
                 
         _lives -= 1;
+
+        if (_lives == 2)
+        {
+            _rightEngine.SetActive(true);
+        }
+        else if (_lives == 1)
+        {
+            _leftEngine.SetActive(true);
+        } 
 
         _uiManager.UpdateLives(_lives);
                 
