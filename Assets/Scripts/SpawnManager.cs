@@ -51,6 +51,6 @@ public class SpawnManager : MonoBehaviour
 
     public void IsPlayerDead()
     {
-        _stopSpawning=true;
+        _stopSpawning=true;        
     }
 }
