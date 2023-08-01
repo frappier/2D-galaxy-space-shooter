@@ -34,13 +34,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _score;
 
+<<<<<<< HEAD
     [SerializeField]
     private AudioClip _laserSoundClip;
     [SerializeField]
-    private AudioClip _explosionSoundClip;
+    private AudioClip _powerupSoundClip;
 
     private AudioSource _audioSource;
 
+=======
+>>>>>>> parent of b21bbce (Added laser sound clip)
     private UIManager _uiManager;
     
    
@@ -51,8 +54,11 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+<<<<<<< HEAD
         _audioSource = GetComponent<AudioSource>();
         
+=======
+>>>>>>> parent of b21bbce (Added laser sound clip)
 
         if(_spawnManager == null)
         {
@@ -64,12 +70,15 @@ public class Player : MonoBehaviour
             Debug.Log("The UI Managaer is NULL");
         }
 
+<<<<<<< HEAD
         if(_audioSource == null)
         {
             Debug.LogError("The AudioSourse in the Player is NULL.");
         }
                        
 
+=======
+>>>>>>> parent of b21bbce (Added laser sound clip)
         _rightEngine.SetActive(false);
         _leftEngine.SetActive(false);
         
@@ -135,15 +144,19 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
         }
+<<<<<<< HEAD
 
         //_audioSource.Play();
         _audioSource.PlayOneShot(_laserSoundClip, 0.7f);
+=======
+>>>>>>> parent of b21bbce (Added laser sound clip)
              
     }
 
     public void TripleShot()
     {
         _isTripleshotActive = true;
+        _audioSource.PlayOneShot(_powerupSoundClip);
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
@@ -157,6 +170,7 @@ public class Player : MonoBehaviour
     {
         //_isSpeedBoostactive = true;
         _speed *= _speedBoostMultiplier;
+        _audioSource.PlayOneShot(_powerupSoundClip);
         StartCoroutine(SpeedBoostPowerDown());
     }
 
@@ -171,6 +185,7 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         _shieldVisualizer.SetActive(true);
+        _audioSource.PlayOneShot(_powerupSoundClip);
     }
 
     public void Damage()
@@ -197,7 +212,6 @@ public class Player : MonoBehaviour
                 
         if(_lives < 1)
         {
-            _audioSource.PlayOneShot(_explosionSoundClip, 0.7f);
             _spawnManager.IsPlayerDead();            
             Destroy(this.gameObject);
             
